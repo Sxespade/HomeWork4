@@ -1,27 +1,3 @@
-/**
- * Порядок выполнения:
- * 1. main() -> initMap() - инициализация массива
- * -------------------------------------------
- * 2. main() -> printMap() - печать массива
- * 3. printMap() -> printMapHeader() - печать впервой строки вывода
- * 4. printMap() -> printMapRows() - печать остальной части массива
- * -------------------------------------------
- * 5. main() -> playGame() - запуск игры. 2 части: человек и машина
- * * -------------------------------------------
- * 6. playGame() -> humanTurn() - ввод числа в терминал
- * 7. humanTurn -> isCellValid - проверка на валидность введенного числа
- * 8. playGame() -> printMap (см п.3-4)
- * * -------------------------------------------
- * 9. playGame() -> checkEnd() - проверка на завершение
- * 10. checkEnd -> checkWin() - проверка на победу
- * 11. checkEnd -> isMapFull() - проверка на ничью
- * * -------------------------------------------
- * 12. п.6-11, но с aiTurn, вместо humanTurn
- * * -------------------------------------------
- * 13. повторение п.6-12
- */
-
-
 import java.util.Random;
 import java.util.Scanner;
 
@@ -44,14 +20,10 @@ public class TicTacToe {
     static int count2 = 0;
     static int count3 = 0;
     static int count4 = 0;
-    static int count5 = 0;
-    static int count6 = 0;
-    static int count7 = 0;
-    static int count8 = 0;
     static int count01 = 0;
     static int count02 = 0;
     static int count03 = 0;
-    static int count06 = 0;
+    static int count04 = 0;
 
     public static void main(String[] args) {
 
@@ -74,7 +46,8 @@ public class TicTacToe {
             }
 
             //ход ИИ
-            if (checkDanger() == true) {
+            if (tryToWin()) {
+            } else if (checkDanger()) {
             } else {
                 aiTurn();
             }
@@ -83,6 +56,93 @@ public class TicTacToe {
                 System.exit(0);
             }
         }
+    }
+
+    private static boolean tryToWin() {
+
+        // победа по столбцам
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (map[j][i] == DOT_O & map[j + 1][i] == DOT_O & map[j + 2][i] == DOT_O & map[j + 3][i] == DOT_EMPTY) {
+                    map[j + 3][i] = DOT_O;
+                    return true;
+                }
+            }
+        }
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (map[j][i] == DOT_O & map[j + 1][i] == DOT_O & map[j + 2][i] == DOT_EMPTY & map[j + 3][i] == DOT_O) {
+                    map[j + 2][i] = DOT_O;
+                    return true;
+                }
+            }
+        }
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (map[j][i] == DOT_O & map[j + 1][i] == DOT_EMPTY & map[j + 2][i] == DOT_O & map[j + 3][i] == DOT_O) {
+                    map[j + 1][i] = DOT_O;
+                    return true;
+                }
+            }
+        }
+
+
+
+        // победа по строкам
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (map[i][j] == DOT_O & map[i][j + 1] == DOT_O & map[i][j + 2] == DOT_O & map[i][j + 3] == DOT_EMPTY) {
+                    map[i][j + 3] = DOT_O;
+                    return true;
+                }
+            }
+        }
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (map[i][j] == DOT_O & map[i][j + 1] == DOT_O & map[i][j + 2] == DOT_EMPTY & map[i][j + 3] == DOT_O) {
+                    map[i][j + 2] = DOT_O;
+                    return true;
+                }
+            }
+        }
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (map[i][j] == DOT_O & map[i][j + 1] == DOT_EMPTY & map[i][j + 2] == DOT_O & map[i][j + 3] == DOT_O) {
+                    map[i][j + 1] = DOT_O;
+                    return true;
+                }
+            }
+        }
+
+
+// победы по диагоналям
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (map[i][j] == DOT_O & map[i + 1][j + 1] == DOT_O & map[i + 2][j + 2] == DOT_O & map[i + 3][j + 3] == DOT_EMPTY) {
+                    map[i + 3][j + 3] = DOT_O;
+                    return true;
+                }
+            }
+        }
+
+
+
+        for (int i = 3; i < 5; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (map[i][j] == DOT_O & map[i - 1][j + 1] == DOT_O & map[i - 2][j + 2] == DOT_O & map[i - 3][j + 3] == DOT_EMPTY) {
+                    map[i - 3][j + 3] = DOT_O;
+                    return true;
+                }
+            }
+        }
+
+
+        return false;
     }
 
 
@@ -109,8 +169,9 @@ public class TicTacToe {
                         }
                     }
                 }
-                count2 = 0;
+                count1 = 0;
             }
+            count1 = 0;
         }
 
 
@@ -137,6 +198,7 @@ public class TicTacToe {
                 }
                 count2 = 0;
             }
+            count2 = 0;
         }
 
 
@@ -159,27 +221,8 @@ public class TicTacToe {
             }
         }
 
-        if (count03 == 2) {
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    if (j < 3 & i < 3) {
-                        if ((map[i][j] == DOT_X) & (map[i + 1][j + 1] == DOT_X) & map[i + 2][j + 2] == DOT_EMPTY) {
-                            map[i + 2][j + 2] = DOT_O;
-                            return true;
-                        }
-                    }
-                    if (j > 2 & i > 2) {
-                        if ((map[i][j] == DOT_X) & (map[i + 1][j + 1] == DOT_X) & map[i - 2][j - 2] == DOT_EMPTY) {
-                            map[i - 2][j - 2] = DOT_O;
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
 
-
-        if (count06 == 2) {
+        if (count04 == 2) {
             for (int i = 4; i >= 1; i--) {
                 for (int j = 0; j < 4; j++) {
                     if (i > 1 & j < 3) {
@@ -191,7 +234,7 @@ public class TicTacToe {
 
                     if (i < 3 & j > 1) {
                         if ((map[i][j] == DOT_X) & (map[i - 1][j + 1] == DOT_X) & map[i + 1][j - 1] == DOT_EMPTY) {
-                            map[i + 1][j - 1] = DOT_O;
+                            map[i + 2][j - 2] = DOT_O;
                             return true;
                         }
                     }
@@ -234,17 +277,16 @@ public class TicTacToe {
 
     private static boolean checkWin(char symbol) {
 
+        System.out.println(symbol);
 
         for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 4; j++) {
-                if ((map[j][i] == symbol) & (map[j + 1][i] == symbol)) {
-                    count1++;
-                    if (count1 == 2) {
-                        count01 = count1;
+            for (int j = 0; j < 2; j++) {
+                if ((map[j][i] == symbol) & (map[j + 1][i] == symbol) & map[j + 2][i] == symbol) {
+                    count01 = 2;
                     }
-                    if (count1 == 3) {
-                        return true;
-                    }
+                if ((map[j][i] == symbol) & (map[j + 1][i] == symbol) & map[j + 2][i] == symbol & map[j + 3][i] == symbol) {
+                    System.out.println("1 " + count1);
+                    return true;
                 }
             }
             count1 = 0;
@@ -252,102 +294,56 @@ public class TicTacToe {
 
 
         for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 4; j++) {
-                if ((map[i][j] == symbol) & (map[i][j + 1] == symbol)) {
-                    count2++;
-                    if (count2 == 2) {
-                        count02 = count2;
-                    }
-                    if (count2 == 3) {
-                        return true;
-                    }
+            for (int j = 0; j < 2; j++) {
+                if ((map[i][j] == symbol) & (map[i][j + 1] == symbol) & map[i][j + 2] == symbol) {
+                    count01 = 2;
+                }
+                if ((map[i][j] == symbol) & (map[i][j + 1] == symbol) & map[i][j + 2] == symbol & map[i][j + 3] == symbol) {
+                    System.out.println("1 " + count1);
+                    return true;
                 }
             }
-            count2 = 0;
+            count1 = 0;
         }
 
 
-        count3 = 0;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                if ((map[i][j] == symbol) & (map[i + 1][j + 1] == symbol)) {
-                    count3++;
+        for (int i = 0; i <= 1; i++) {
+            for (int j = 0; j <= 1; j++) {
+                if ((map[i][j] == symbol) & (map[i + 1][j + 1] == symbol) & map[i + 2][j + 2] == symbol) {
+                    count3 = 2;
                 }
 
-                if (count3 == 2) {
+                if (count3 == 2 & symbol == DOT_X) {
                     count03 = count3;
                 }
 
-                if (count3 == 3) {
+                if ((map[i][j] == symbol) & (map[i + 1][j + 1] == symbol) & map[i + 2][j + 2] == symbol & map[i + 3][j + 3] == symbol) {
+                    System.out.println("3 " + count3);
                     return true;
                 }
             }
+            count3 = 0;
         }
 
 
-        for (int i = 4; i >= 1; i--) {
-            for (int j = 0; j < 4; j++) {
-                if ((map[i][j] == symbol) & (map[i - 1][j + 1] == symbol)) {
-                    count6++;
-                }
-                if (count6 == 2) {
-                    count06 = count6;
+        for (int i = 3; i <= 4; i++) {
+            for (int j = 0; j <= 1; j++) {
+                if ((map[i][j] == symbol) & (map[i - 1][j + 1] == symbol) & map[i - 2][j + 2] == symbol) {
+                    count4 = 2;
                 }
 
-                if (count6 == 3) {
+                if (count4 == 2 & symbol == DOT_X) {
+                    count04 = count4;
+                }
+
+                if ((map[i][j] == symbol) & (map[i - 1][j + 1] == symbol) & map[i - 2][j + 2] == symbol & map[i - 3][j + 3] == symbol) {
+                    System.out.println("4 " + count4);
                     return true;
                 }
             }
+            count4 = 0;
         }
-        count6 = 0;
 
-
-        for (int i = 0; i < 3; i++) {
-            if ((map[i][i + 1] == symbol) & (map[i + 1][i + 2] == symbol)) {
-                count4++;
-            }
-            if (count4 == 3) {
-                return true;
-            }
-        }
-        count4 = 0;
-
-
-        for (int i = 0; i < 3; i++) {
-            if ((map[i + 1][i] == symbol) & (map[i + 2][i + 1] == symbol)) {
-                count5++;
-            }
-            if (count5 == 3) {
-                return true;
-            }
-        }
-        count5 = 0;
-
-
-        for (int i = 4; i >= 2; i--) {
-            for (int j = 1; j < 4; j++) {
-                if ((map[i][j] == symbol) & (map[i - 1][j + 1] == symbol)) {
-                    count7++;
-                }
-            }
-            if (count7 == 3) {
-                return true;
-            }
-        }
-        count7 = 0;
-
-
-        for (int i = 3; i > 0; i--) {
-            for (int j = 0; j < 4; j++) {
-                if ((map[i][j] == symbol) & (map[i - 1][j + 1] == symbol)) {
-                    count8++;
-                }
-            }
-            if (count8 == 3) {
-                return true;
-            }
-        }
-        count8 = 0;
 
         return false;
     }
