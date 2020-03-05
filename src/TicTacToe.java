@@ -296,10 +296,10 @@ public class TicTacToe {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 2; j++) {
                 if ((map[i][j] == symbol) & (map[i][j + 1] == symbol) & map[i][j + 2] == symbol) {
-                    count01 = 2;
+                    count02 = 2;
                 }
                 if ((map[i][j] == symbol) & (map[i][j + 1] == symbol) & map[i][j + 2] == symbol & map[i][j + 3] == symbol) {
-                    System.out.println("1 " + count1);
+                    System.out.println("1 " + count2);
                     return true;
                 }
             }
